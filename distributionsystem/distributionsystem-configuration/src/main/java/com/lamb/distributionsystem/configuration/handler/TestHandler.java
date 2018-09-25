@@ -13,6 +13,6 @@ import static com.lamb.distributionsystem.common.enums.ProcessExceptionEnum.EB00
 public class TestHandler extends LambHandler {
 
     public Mono<ServerResponse> test(ServerRequest request) {
-        throw new ProcessException(EB00000000);
+        return example();
     }
 }
