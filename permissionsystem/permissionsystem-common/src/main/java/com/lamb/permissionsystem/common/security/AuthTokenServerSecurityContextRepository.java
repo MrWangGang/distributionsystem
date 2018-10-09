@@ -74,7 +74,7 @@ public class AuthTokenServerSecurityContextRepository implements ServerSecurityC
                 throw new ProcessException(EB00000001);
             }
         }else {
-            if (new Date().getTime() -  userTokenDO.getCreateTime().getTime()> Long.valueOf(StringUtils.isBlank(dictDO.getValue()) ? "0" : dictDO.getValue())) {
+            if (new Date().getTime() -  userTokenDO.getCreateTime().getTime()> Long.valueOf(StringUtils.isBlank(dictDO.getDictValue()) ? "0" : dictDO.getDictValue())) {
                 throw new ProcessException(EB00000001);
             }
         }
