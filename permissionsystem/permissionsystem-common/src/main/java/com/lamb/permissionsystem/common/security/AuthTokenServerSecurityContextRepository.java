@@ -20,6 +20,7 @@ import reactor.core.publisher.Mono;
 
 import javax.annotation.Resource;
 import java.util.Date;
+import java.util.Optional;
 
 import static com.lamb.permissionsystem.common.enums.ProcessExceptionEnum.EB00000001;
 import static com.lamb.permissionsystem.common.enums.ProcessExceptionEnum.EB00000002;
@@ -56,16 +57,17 @@ public class AuthTokenServerSecurityContextRepository implements ServerSecurityC
         if(StringUtils.isBlank(token)){
             throw new ProcessException(EB00000002);
         }
-        UserTokenDO userTokenDO = userTokenDOMapper.selectByPrimaryKey(token);
+        UserTokenDO userTokenDO = userTokenDOMapper.findById(token).get();
+
         if(userTokenDO == null){
             throw new ProcessException(EB00000002);
         }
-        UserDO userDO = userDOMapper.selectByPrimaryKey(userTokenDO.getUserId());
+        UserDO userDO = userDOMapper.findById(userTokenDO.getUserId()).get();
         if(userDO == null){
             throw new ProcessException(EB00000002);
         }
         userTokenDO.getCreateTime();
-        DictDO dictDO = dictDOMapper.selectByPrimaryKey("token_invalid_ms");
+        DictDO dictDO = dictDOMapper.findById("token_invalid_ms").get();
         if(dictDO == null){
             //如果不存在,默认1小时后失效
             if(new Date().getTime() - userTokenDO.getCreateTime().getTime() > 3600000){

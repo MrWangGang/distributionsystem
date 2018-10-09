@@ -9,33 +9,25 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 /**
- * @description: 数据字典表
+ * @description: 权限表
  * @author: Mr.WangGang
- * @create: 2018-08-24 14:51
+ * @create: 2018-10-09 上午 11:43
  **/
 @Data
-@Table(name = "dict")
-public class DictDO {
-
+@Table(name = "permission")
+public class PermissionDO {
     @Id
     @GenericGenerator(name="idGenerator", strategy="uuid")
     @GeneratedValue(generator="idGenerator")
-    @Column(name="dict_id")
-    private String dictId;
+    @Column(name="permission_id")
+    private String permissionId;
 
-    @Column(name="dict_key")
-    private String dictKey;
-
-    @Column(name="dict_value")
-    private String dictValue;
-
-    @Column(name="dict_note")
-    private String dictNote;
+    @Column(name="permission_name")
+    private String permissionName;
 
     @Column(name="create_time")
     private String createTime;
 
     @Column(name="update_time")
     private String updateTime;
-
 }

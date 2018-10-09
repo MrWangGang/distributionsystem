@@ -10,12 +10,6 @@
     <name>permissionsystem</name>
     <description>Design and development of Permission Management System based on RBAC</description>
 
-    <parent>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.0.4.RELEASE</version>
-    </parent>
-
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
@@ -42,18 +36,12 @@
             <artifactId>lambframework-core</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
-        <!-- https://mvnrepository.com/artifact/com.github.pagehelper/pagehelper-spring-boot-starter -->
-        <dependency>
-            <groupId>com.github.pagehelper</groupId>
-            <artifactId>pagehelper-spring-boot-starter</artifactId>
-            <version>1.2.5</version>
-        </dependency>
     </dependencies>
 
     <modules>
-        <module>distributionsystem-repository</module>
-        <module>distributionsystem-api</module>
-        <module>distributionsystem-common</module>
-        <module>distributionsystem-service</module>
+        <module>permissionsystem-repository</module>
+        <module>permissionsystem-api</module>
+        <module>permissionsystem-common</module>
+        <module>permissionsystem-service</module>
     </modules>
 </project>

@@ -12,7 +12,6 @@ import java.util.Collection;
 
 
 /**
- * @program: decisionsupportsystem
  * @description: 用户表
  * @author: Mr.WangGang
  * @create: 2018-08-24 14:29
@@ -49,37 +48,30 @@ public class UserDO implements UserDetails {
     @Column(name = "update_time")
     private Timestamp updateTime;
 
-    @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return null;
     }
 
-    @Override
     public String getPassword() {
         return null;
     }
 
-    @Override
     public String getUsername() {
         return null;
     }
 
-    @Override
     public boolean isAccountNonExpired() {
         return false;
     }
 
-    @Override
     public boolean isAccountNonLocked() {
         return false;
     }
 
-    @Override
     public boolean isCredentialsNonExpired() {
         return false;
     }
 
-    @Override
     public boolean isEnabled() {
         return false;
     }

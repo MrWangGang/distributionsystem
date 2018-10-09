@@ -4,7 +4,6 @@ import com.lamb.permissionsystem.repository.adapter.LambMapper;
 import com.lamb.permissionsystem.repository.domain.UserDO;
 import org.apache.ibatis.annotations.Mapper;
 
-
 /**
  * @program: decisionsupportsystem
  * @description: 用户表DAO

@@ -8,7 +8,6 @@ import javax.persistence.Table;
 import java.sql.Timestamp;
 
 /**
- * @program: decisionsupportsystem
  * @description: 用户token表
  * @author: Mr.WangGang
  * @create: 2018-08-24 14:40

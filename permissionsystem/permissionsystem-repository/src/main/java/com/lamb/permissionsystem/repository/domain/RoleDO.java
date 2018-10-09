@@ -9,33 +9,26 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 /**
- * @description: 数据字典表
+ * @description: 角色表
  * @author: Mr.WangGang
- * @create: 2018-08-24 14:51
+ * @create: 2018-10-09 上午 11:52
  **/
-@Data
-@Table(name = "dict")
-public class DictDO {
 
+@Data
+@Table(name = "role")
+public class RoleDO {
     @Id
     @GenericGenerator(name="idGenerator", strategy="uuid")
     @GeneratedValue(generator="idGenerator")
-    @Column(name="dict_id")
-    private String dictId;
+    @Column(name="role_id")
+    private String roleId;
 
-    @Column(name="dict_key")
-    private String dictKey;
-
-    @Column(name="dict_value")
-    private String dictValue;
-
-    @Column(name="dict_note")
-    private String dictNote;
+    @Column(name="role_name")
+    private String roleName;
 
     @Column(name="create_time")
     private String createTime;
 
     @Column(name="update_time")
     private String updateTime;
-
 }
