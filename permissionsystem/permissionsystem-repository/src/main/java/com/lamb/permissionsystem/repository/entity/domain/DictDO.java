@@ -1,10 +1,9 @@
-package com.lamb.permissionsystem.repository.domain;
+package com.lamb.permissionsystem.repository.entity.domain;
 
 import lombok.Data;
-import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
+import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
@@ -14,14 +13,13 @@ import javax.persistence.Table;
  * @create: 2018-08-24 14:51
  **/
 @Data
+@Entity
 @Table(name = "dict")
 public class DictDO {
 
     @Id
-    @GenericGenerator(name="idGenerator", strategy="uuid")
-    @GeneratedValue(generator="idGenerator")
     @Column(name="dict_id")
-    private String dictId;
+    private Integer dictId;
 
     @Column(name="dict_key")
     private String dictKey;

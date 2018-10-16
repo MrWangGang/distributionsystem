@@ -1,3 +1,4 @@
+/*
 package com.lamb.permissionsystem.common.security;
 
 import org.lamb.lambframework.core.security.LambServerAccessDeniedHandler;
@@ -15,12 +16,14 @@ import org.springframework.security.web.server.SecurityWebFilterChain;
 import javax.annotation.Resource;
 
 
+*/
 /**
  * @program: decisionsupportsystem
  * @description: spring权限框架配置
  * @author: Mr.WangGang
  * @create: 2018-08-29 17:08
- **/
+ **//*
+
 @Configuration
 public class SpringSecurityConfig  {
 
@@ -44,29 +47,10 @@ public class SpringSecurityConfig  {
         http.securityContextRepository(authTokenServerSecurityContextRepository);
         http.exceptionHandling().authenticationEntryPoint(lambServerAuthenticationEntryPoint);
         http.exceptionHandling().accessDeniedHandler(lambServerAccessDeniedHandler);
-        http.authorizeExchange().anyExchange().authenticated();
+        http.authorizeExchange().anyExchange().permitAll();
 
         return http.build();
     }
-
-    @Bean
-    public MapReactiveUserDetailsService userDetailsService(final PasswordEncoder passwordEncoder) {
-
-        UserDetails user = User
-                .withUsername("user")
-                .password(passwordEncoder.encode("password"))
-                .roles("USER")
-                .build();
-
-        UserDetails admin = User
-                .withUsername("admin")
-                .password(passwordEncoder.encode("password"))
-                .roles("ADMIN")
-                .build();
-
-        return new MapReactiveUserDetailsService(user, admin);
-    }
-
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
@@ -74,3 +58,4 @@ public class SpringSecurityConfig  {
 
 }
 
+*/

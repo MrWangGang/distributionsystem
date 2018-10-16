@@ -1,7 +1,7 @@
 package com.lamb.permissionsystem.common.util;
 
-import com.lamb.permissionsystem.repository.domain.UserDO;
-import com.lamb.permissionsystem.repository.mapper.UserDOMapper;
+import com.lamb.permissionsystem.repository.entity.domain.UserDO;
+import com.lamb.permissionsystem.repository.dao.repository.UserDORepository;
 import org.springframework.stereotype.Component;
 import reactor.core.publisher.Mono;
 
@@ -11,7 +11,7 @@ import javax.annotation.Resource;
 public class SessionUtil {
 
     @Resource
-    private UserDOMapper userDOMapper;
+    private UserDORepository userDORepository;
 
 
     public UserDO getLoginUser(){

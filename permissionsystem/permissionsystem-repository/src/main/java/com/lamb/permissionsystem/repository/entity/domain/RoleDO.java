@@ -1,12 +1,12 @@
-package com.lamb.permissionsystem.repository.domain;
+package com.lamb.permissionsystem.repository.entity.domain;
 
 import lombok.Data;
-import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
+import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.util.Date;
 
 /**
  * @description: 角色表
@@ -15,20 +15,19 @@ import javax.persistence.Table;
  **/
 
 @Data
+@Entity
 @Table(name = "role")
 public class RoleDO {
     @Id
-    @GenericGenerator(name="idGenerator", strategy="uuid")
-    @GeneratedValue(generator="idGenerator")
     @Column(name="role_id")
-    private String roleId;
+    private Integer roleId;
 
     @Column(name="role_name")
     private String roleName;
 
     @Column(name="create_time")
-    private String createTime;
+    private Date createTime;
 
     @Column(name="update_time")
-    private String updateTime;
+    private Date updateTime;
 }
