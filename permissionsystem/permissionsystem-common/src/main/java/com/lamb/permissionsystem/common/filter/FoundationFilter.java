@@ -2,10 +2,7 @@ package com.lamb.permissionsystem.common.filter;
 
 import com.lamb.permissionsystem.common.exception.ProcessException;
 import com.lamb.permissionsystem.repository.dao.operation.UserTokenTMOperation;
-import com.lamb.permissionsystem.repository.dao.repository.ServiceDORepository;
-import com.lamb.permissionsystem.repository.dao.repository.SystemDORepository;
-import com.lamb.permissionsystem.repository.dao.repository.SystemServiceDORepository;
-import com.lamb.permissionsystem.repository.dao.repository.UserDORepository;
+import com.lamb.permissionsystem.repository.dao.repository.*;
 import com.lamb.permissionsystem.repository.entity.domain.ServiceDO;
 import com.lamb.permissionsystem.repository.entity.domain.UserDO;
 import com.lamb.permissionsystem.repository.entity.template.UserTokenTM;
@@ -18,6 +15,7 @@ import org.springframework.web.server.WebFilterChain;
 import reactor.core.publisher.Mono;
 
 import javax.annotation.Resource;
+import java.util.List;
 import java.util.Optional;
 
 import static com.lamb.permissionsystem.common.enums.FoundationPropertyEnum.*;
@@ -46,6 +44,9 @@ public class FoundationFilter  implements WebFilter {
     @Resource
     private UserTokenTMOperation userTokenTMOperation;
 
+    @Resource
+    private FoundationQueryRepository foundationQueryRepository;
+
     @Override
     public Mono<Void> filter(ServerWebExchange serverWebExchange, WebFilterChain webFilterChain) {
 
@@ -56,7 +57,7 @@ public class FoundationFilter  implements WebFilter {
             throw new ProcessException(EI00000001);
         }
 
-        ServiceDO serviceDO = serviceDORepository.findByServiceCode(serviceCode).orElseThrow(()->new ProcessException(EB00000003));
+        ServiceDO serviceDO = foundationQueryRepository.findByServiceCode(serviceCode).orElseThrow(()->new ProcessException(EB00000003));
 
         Byte serviceStrategy = serviceDO.getServiceStrategy();
 
@@ -72,7 +73,7 @@ public class FoundationFilter  implements WebFilter {
             //需要授权
             UserDO userDO = autc(accessToken);
             legitimateRequestUSS(userDO,serviceDO);
-            autz(userDO);
+            autz(userDO,serviceDO);
             return webFilterChain.filter(serverWebExchange).then();
         }else{
             throw new ProcessException(EB00000004);
@@ -81,7 +82,6 @@ public class FoundationFilter  implements WebFilter {
 
     //认证
     private UserDO autc(String accessToken){
-
         if(StringUtils.isBlank(accessToken)){
             throw new ProcessException(EI00000000);
         }
@@ -91,8 +91,11 @@ public class FoundationFilter  implements WebFilter {
     }
 
     //授权
-    private void autz(UserDO userDO){
-
+    private void autz(UserDO userDO,ServiceDO serviceDO){
+        List<ServiceDO> services =  foundationQueryRepository.findServiceByUserId(userDO.getUserId()).orElseThrow(()->new ProcessException(EB00000005));
+        if (services.stream().noneMatch(e -> serviceDO.getServiceId().compareTo(e.getServiceId()) == 0)){
+            throw new ProcessException(EB00000005);
+        }
     }
     //合法的用户系统服务之间关系
     private void legitimateRequestUSS(UserDO userDO,ServiceDO serviceDO){
