@@ -22,5 +22,11 @@
             <artifactId>permissionsystem-repository</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
+        <dependency>
+            <groupId>com.lamb.permissionsystem</groupId>
+            <artifactId>permissionsystem-common</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
     </dependencies>
 </project>

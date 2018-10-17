@@ -19,12 +19,7 @@
     <dependencies>
         <dependency>
             <groupId>com.lamb.permissionsystem</groupId>
-            <artifactId>permissionsystem-common</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
-        </dependency>
-        <dependency>
-            <groupId>com.lamb.permissionsystem</groupId>
-            <artifactId>permissionsystem-repository</artifactId>
+            <artifactId>permissionsystem-service</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
     </dependencies>

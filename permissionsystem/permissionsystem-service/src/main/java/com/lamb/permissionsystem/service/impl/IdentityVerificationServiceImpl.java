@@ -1,20 +1,20 @@
-package com.lamb.permissionsystem.common.filter;
+package com.lamb.permissionsystem.service.impl;
 
 import com.lamb.permissionsystem.common.exception.ProcessException;
 import com.lamb.permissionsystem.repository.dao.operation.UserTokenTMOperation;
-import com.lamb.permissionsystem.repository.dao.repository.*;
+import com.lamb.permissionsystem.repository.dao.repository.FoundationQueryRepository;
+import com.lamb.permissionsystem.repository.dao.repository.SystemDORepository;
+import com.lamb.permissionsystem.repository.dao.repository.SystemServiceDORepository;
+import com.lamb.permissionsystem.repository.dao.repository.UserDORepository;
 import com.lamb.permissionsystem.repository.entity.domain.ServiceDO;
 import com.lamb.permissionsystem.repository.entity.domain.UserDO;
 import com.lamb.permissionsystem.repository.entity.template.UserTokenTM;
+import com.lamb.permissionsystem.service.IdentityVerificationService;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.http.server.reactive.ServerHttpRequest;
-import org.springframework.web.server.ServerWebExchange;
-import org.springframework.web.server.WebFilter;
-import org.springframework.web.server.WebFilterChain;
-import reactor.core.publisher.Mono;
+import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 
@@ -22,13 +22,15 @@ import static com.lamb.permissionsystem.common.enums.FoundationPropertyEnum.*;
 import static com.lamb.permissionsystem.common.enums.ProcessExceptionEnum.*;
 import static com.lamb.permissionsystem.repository.enums.RedisTMKeyEnum.USER_TOKEN;
 
+
 /**
- * @description: 基础过滤器
+ * @description: 身份验证
  * @author: Mr.WangGang
- * @create: 2018-10-16 下午 5:15
+ * @create: 2018-10-17 下午 12:31
  **/
-@Configuration
-public class FoundationFilter  implements WebFilter {
+@Service
+@Transactional
+public class IdentityVerificationServiceImpl implements IdentityVerificationService {
     @Resource
     private UserDORepository userDORepository;
 
@@ -38,8 +40,6 @@ public class FoundationFilter  implements WebFilter {
     @Resource
     private SystemServiceDORepository systemServiceDORepository;
 
-    @Resource
-    private ServiceDORepository serviceDORepository;
 
     @Resource
     private UserTokenTMOperation userTokenTMOperation;
@@ -47,12 +47,9 @@ public class FoundationFilter  implements WebFilter {
     @Resource
     private FoundationQueryRepository foundationQueryRepository;
 
-    @Override
-    public Mono<Void> filter(ServerWebExchange serverWebExchange, WebFilterChain webFilterChain) {
 
-        ServerHttpRequest request =  serverWebExchange.getRequest();
-        String accessToken  = request.getHeaders().getFirst("accessToken");
-        String serviceCode  = request.getHeaders().getFirst("serviceCode");
+    @Override
+    public void validate(String serviceCode,String accessToken) {
         if(StringUtils.isBlank(serviceCode)){
             throw new ProcessException(EI00000001);
         }
@@ -61,20 +58,20 @@ public class FoundationFilter  implements WebFilter {
 
         Byte serviceStrategy = serviceDO.getServiceStrategy();
 
-        if(ANY.getValue().equals(serviceStrategy)){
+        if(T_SERVICE_ANY.getValue().equals(serviceStrategy)){
             //任何人都可以访问
-            return webFilterChain.filter(serverWebExchange).then();
-        }else if(AUTC.getValue().equals(serviceStrategy)){
+            return;
+        }else if(T_SERVICE_AUTC.getValue().equals(serviceStrategy)){
             //需要认证
             UserDO userDO = autc(accessToken);
             legitimateRequestUSS(userDO,serviceDO);
-            return webFilterChain.filter(serverWebExchange).then();
-        }else if(AUTZ.getValue().equals(serviceStrategy)){
+            return;
+        }else if(T_SERVICE_AUTZ.getValue().equals(serviceStrategy)){
             //需要授权
             UserDO userDO = autc(accessToken);
             legitimateRequestUSS(userDO,serviceDO);
             autz(userDO,serviceDO);
-            return webFilterChain.filter(serverWebExchange).then();
+            return;
         }else{
             throw new ProcessException(EB00000004);
         }
