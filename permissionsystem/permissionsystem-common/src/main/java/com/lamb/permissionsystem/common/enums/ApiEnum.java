@@ -10,7 +10,7 @@ import lombok.Setter;
  **/
 public enum  ApiEnum {
     // I 意味着这是一个接口   P  权限   C 控制   M  管理  S 系统 ->权限系统接口
-    IPCMS00001("/IPCMS00001");//身份认证
+     IPCMS00001("/IPCMS00001");//身份认证
 
     @Getter
     @Setter

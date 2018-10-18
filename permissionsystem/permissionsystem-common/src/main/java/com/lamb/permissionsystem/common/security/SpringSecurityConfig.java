@@ -13,7 +13,6 @@ import static com.lamb.permissionsystem.common.enums.ApiEnum.IPCMS00001;
  * @author: Mr.WangGang
  * @create: 2018-08-29 17:08
  **/
-
 @Configuration
 public class SpringSecurityConfig extends LambSpringSecurityConfig {
 
