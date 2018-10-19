@@ -1,18 +1,24 @@
 package com.lamb.permissionsystem.api.controller;
 
+import com.lamb.permissionsystem.entity.parameter.FoundationOperationLoginPO;
+import com.lamb.permissionsystem.entity.visual.EmployeeAuthTokenVO;
 import com.lamb.permissionsystem.service.EmployeeOperationService;
-import io.swagger.annotations.*;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import org.lamb.lambframework.core.handler.LambHandler;
 import org.lamb.lambframework.core.templete.LambResponseTemplete;
 import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.reactive.function.server.ServerRequest;
-import org.springframework.web.reactive.function.server.ServerResponse;
 import reactor.core.publisher.Mono;
 
 import javax.annotation.Resource;
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 
 /**
  * @description: 基础操作
@@ -26,16 +32,11 @@ public class FoundationOperationController extends LambHandler {
     private EmployeeOperationService employeeOperationService;
 
     @ApiOperation(value = "登录" ,  notes="本系统员工由此登录")
-    @ApiImplicitParams({
-            @ApiImplicitParam(paramType = "body", dataType = "json", name = "serviceCode", value = "员工信息RO", required = true) ,
-    })
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "成功",response = LambResponseTemplete.class)
+            @ApiResponse(code = 200, message = "成功",response = EmployeeAuthTokenVO.class)
     })
-    @RequestMapping(value= "/IPCMS00001",method= RequestMethod.POST,consumes= MediaType.APPLICATION_JSON_VALUE)
-    public Mono<ServerResponse> IPCMS00001(ServerRequest request){
-
-        identityVerificationService.validate(request.headers().asHttpHeaders().getFirst("serviceCode"),request.headers().asHttpHeaders().getFirst("accessToken"));
-        return example();
+    @RequestMapping(value= "/IPCMS00002",method= RequestMethod.POST,consumes= MediaType.APPLICATION_JSON_VALUE)
+    public Mono<LambResponseTemplete> IPCMS00002(@RequestBody @Valid @NotNull FoundationOperationLoginPO param){
+        return returning(employeeOperationService.login(param));
     }
 }

@@ -50,6 +50,7 @@
         <module>permissionsystem-api</module>
         <module>permissionsystem-common</module>
         <module>permissionsystem-service</module>
+        <module>permissionsystem-entity</module>
     </modules>
 
     <build>

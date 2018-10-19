@@ -3,10 +3,12 @@ package com.lamb.permissionsystem.common.security;
 import org.lamb.lambframework.core.config.LambSpringSecurityConfig;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.web.server.ServerHttpSecurity;
+import org.springframework.security.web.server.SecurityWebFilterChain;
 
 import javax.annotation.Resource;
 
 import static com.lamb.permissionsystem.common.enums.ApiEnum.IPCMS00001;
+import static com.lamb.permissionsystem.common.enums.ApiEnum.IPCMS00002;
 
 
 /**
@@ -18,12 +20,16 @@ import static com.lamb.permissionsystem.common.enums.ApiEnum.IPCMS00001;
 @Configuration
 public class SpringSecurityConfig extends LambSpringSecurityConfig {
 
+
     @Resource
-    private AuthTokenServerSecurityContextRepository authTokenServerSecurityContextRepository;
+    private AuthTokenReactiveAuthorizationManager authTokenReactiveAuthorizationManager;
+
 
     @Override
-    public void strategy(ServerHttpSecurity http) {
-        http.securityContextRepository(authTokenServerSecurityContextRepository);
+    public SecurityWebFilterChain strategy(ServerHttpSecurity http) {
         http.authorizeExchange().pathMatchers(IPCMS00001.api()).permitAll();
+        http.authorizeExchange().pathMatchers(IPCMS00002.api()).permitAll();
+        http.authorizeExchange().anyExchange().access(authTokenReactiveAuthorizationManager);
+        return http.build();
     }
 }

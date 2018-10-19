@@ -1,4 +1,4 @@
-package com.lamb.permissionsystem.repository.entity.domain;
+package com.lamb.permissionsystem.entity.domain;
 
 import lombok.Data;
 
@@ -6,6 +6,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.util.Date;
 
 /**
  * @description: 数据字典表
@@ -31,9 +32,9 @@ public class DictDO {
     private String dictNote;
 
     @Column(name="create_time")
-    private String createTime;
+    private Date createTime;
 
     @Column(name="update_time")
-    private String updateTime;
+    private Date updateTime;
 
 }

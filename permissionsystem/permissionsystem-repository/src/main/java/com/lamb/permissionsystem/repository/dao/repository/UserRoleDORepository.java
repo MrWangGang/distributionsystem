@@ -1,6 +1,6 @@
 package com.lamb.permissionsystem.repository.dao.repository;
 
-import com.lamb.permissionsystem.repository.entity.domain.UserRoleDO;
+import com.lamb.permissionsystem.entity.domain.UserRoleDO;
 import org.lamb.lambframework.core.supper.LambDORepository;
 
 /**

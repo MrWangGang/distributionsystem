@@ -1,6 +1,6 @@
 package com.lamb.permissionsystem.repository.dao.operation;
 
-import com.lamb.permissionsystem.repository.entity.template.EmployeeTM;
+import com.lamb.permissionsystem.entity.template.EmployeeTM;
 import org.lamb.lambframework.core.supper.LambTMOperation;
 import org.springframework.stereotype.Component;
 

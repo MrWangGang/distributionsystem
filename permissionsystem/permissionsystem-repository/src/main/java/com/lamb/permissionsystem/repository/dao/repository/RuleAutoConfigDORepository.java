@@ -1,6 +1,6 @@
 package com.lamb.permissionsystem.repository.dao.repository;
 
-import com.lamb.permissionsystem.repository.entity.domain.RuleAutoConfigDO;
+import com.lamb.permissionsystem.entity.domain.RuleAutoConfigDO;
 import org.lamb.lambframework.core.supper.LambDORepository;
 
 /**

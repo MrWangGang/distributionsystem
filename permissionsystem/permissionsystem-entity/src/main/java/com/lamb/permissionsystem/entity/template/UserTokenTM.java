@@ -1,4 +1,4 @@
-package com.lamb.permissionsystem.repository.entity.template;
+package com.lamb.permissionsystem.entity.template;
 
 import lombok.Data;
 

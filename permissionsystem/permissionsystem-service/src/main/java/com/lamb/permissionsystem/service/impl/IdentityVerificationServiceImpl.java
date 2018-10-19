@@ -1,16 +1,18 @@
 package com.lamb.permissionsystem.service.impl;
 
 import com.lamb.permissionsystem.common.exception.ProcessException;
+import com.lamb.permissionsystem.entity.domain.ServiceDO;
+import com.lamb.permissionsystem.entity.domain.UserDO;
+import com.lamb.permissionsystem.entity.parameter.PCMSServiceProviderValidatePO;
+import com.lamb.permissionsystem.entity.template.UserTokenTM;
+import com.lamb.permissionsystem.entity.validate.GroupRequired;
 import com.lamb.permissionsystem.repository.dao.operation.UserTokenTMOperation;
 import com.lamb.permissionsystem.repository.dao.repository.FoundationQueryRepository;
 import com.lamb.permissionsystem.repository.dao.repository.SystemDORepository;
 import com.lamb.permissionsystem.repository.dao.repository.SystemServiceDORepository;
 import com.lamb.permissionsystem.repository.dao.repository.UserDORepository;
-import com.lamb.permissionsystem.repository.entity.domain.ServiceDO;
-import com.lamb.permissionsystem.repository.entity.domain.UserDO;
-import com.lamb.permissionsystem.repository.entity.template.UserTokenTM;
 import com.lamb.permissionsystem.service.IdentityVerificationService;
-import org.apache.commons.lang3.StringUtils;
+import org.lamb.lambframework.core.util.ValidatorUtil;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -49,12 +51,9 @@ public class IdentityVerificationServiceImpl implements IdentityVerificationServ
 
 
     @Override
-    public void validate(String serviceCode,String accessToken) {
-        if(StringUtils.isBlank(serviceCode)){
-            throw new ProcessException(EI00000001);
-        }
-
-        ServiceDO serviceDO = foundationQueryRepository.findByServiceCode(serviceCode).orElseThrow(()->new ProcessException(EB00000003));
+    public void validate(PCMSServiceProviderValidatePO pcmsServiceProviderValidatePO) {
+       ValidatorUtil.validate(pcmsServiceProviderValidatePO);
+        ServiceDO serviceDO = foundationQueryRepository.findByServiceCode(pcmsServiceProviderValidatePO.getServiceCode()).orElseThrow(()->new ProcessException(EB00000003));
 
         Byte serviceStrategy = serviceDO.getServiceStrategy();
 
@@ -63,12 +62,12 @@ public class IdentityVerificationServiceImpl implements IdentityVerificationServ
             return;
         }else if(T_SERVICE_AUTC.getValue().equals(serviceStrategy)){
             //需要认证
-            UserDO userDO = autc(accessToken);
+            UserDO userDO = autc(pcmsServiceProviderValidatePO);
             legitimateRequestUSS(userDO,serviceDO);
             return;
         }else if(T_SERVICE_AUTZ.getValue().equals(serviceStrategy)){
             //需要授权
-            UserDO userDO = autc(accessToken);
+            UserDO userDO = autc(pcmsServiceProviderValidatePO);
             legitimateRequestUSS(userDO,serviceDO);
             autz(userDO,serviceDO);
             return;
@@ -78,11 +77,9 @@ public class IdentityVerificationServiceImpl implements IdentityVerificationServ
     }
 
     //认证
-    private UserDO autc(String accessToken){
-        if(StringUtils.isBlank(accessToken)){
-            throw new ProcessException(EI00000000);
-        }
-        UserTokenTM userTokenTM = Optional.ofNullable(userTokenTMOperation.getObject(USER_TOKEN.getKey()+accessToken)).orElseThrow(()->new ProcessException(EB00000000));
+    private UserDO autc(PCMSServiceProviderValidatePO pcmsServiceProviderValidatePO){
+        ValidatorUtil.validate(pcmsServiceProviderValidatePO,GroupRequired.class);
+        UserTokenTM userTokenTM = Optional.ofNullable(userTokenTMOperation.getObject(USER_TOKEN.getKey()+pcmsServiceProviderValidatePO.getAccessToken())).orElseThrow(()->new ProcessException(EB00000000));
         UserDO userDO = userDORepository.findById(userTokenTM.getUserId()).orElseThrow(()->new ProcessException(EB00000000));
         return userDO;
     }

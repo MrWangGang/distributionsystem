@@ -1,6 +1,6 @@
 package com.lamb.permissionsystem.repository.dao.operation;
 
-import com.lamb.permissionsystem.repository.entity.template.UserTokenTM;
+import com.lamb.permissionsystem.entity.template.UserTokenTM;
 import org.lamb.lambframework.core.supper.LambTMOperation;
 import org.springframework.stereotype.Component;
 

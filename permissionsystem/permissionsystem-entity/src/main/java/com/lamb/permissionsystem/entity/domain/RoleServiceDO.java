@@ -1,4 +1,4 @@
-package com.lamb.permissionsystem.repository.entity.domain;
+package com.lamb.permissionsystem.entity.domain;
 
 import lombok.Data;
 
@@ -9,20 +9,20 @@ import javax.persistence.Table;
 import java.util.Date;
 
 /**
- * @description: 系统与服务中间表
+ * @description: 角色服务关联表
  * @author: Mr.WangGang
- * @create: 2018-10-12 下午 2:19
+ * @create: 2018-10-09 下午 1:10
  **/
 @Data
 @Entity
-@Table(name = "system_service")
-public class SystemServiceDO {
+@Table(name = "role_service")
+public class RoleServiceDO {
     @Id
-    @Column(name="system_service_id")
-    private Integer systemServiceId;
+    @Column(name="role_service_id")
+    private Integer roleServiceId;
 
-    @Column(name="system_id")
-    private Integer systemId;
+    @Column(name="role_id")
+    private Integer roleId;
 
     @Column(name="service_id")
     private Integer serviceId;

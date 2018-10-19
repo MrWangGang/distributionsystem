@@ -1,7 +1,7 @@
 package com.lamb.permissionsystem.repository.dao.repository;
 
 
-import com.lamb.permissionsystem.repository.entity.domain.ServiceDO;
+import com.lamb.permissionsystem.entity.domain.ServiceDO;
 import org.lamb.lambframework.core.supper.LambDORepository;
 import org.springframework.data.jpa.repository.Query;
 

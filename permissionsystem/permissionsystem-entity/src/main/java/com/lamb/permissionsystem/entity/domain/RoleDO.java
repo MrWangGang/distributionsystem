@@ -1,4 +1,4 @@
-package com.lamb.permissionsystem.repository.entity.domain;
+package com.lamb.permissionsystem.entity.domain;
 
 import lombok.Data;
 
@@ -9,24 +9,21 @@ import javax.persistence.Table;
 import java.util.Date;
 
 /**
- * @description: 用户与角色中间表
+ * @description: 角色表
  * @author: Mr.WangGang
- * @create: 2018-10-12 下午 2:20
+ * @create: 2018-10-09 上午 11:52
  **/
+
 @Data
 @Entity
-@Table(name = "user_role")
-public class UserRoleDO {
-
+@Table(name = "role")
+public class RoleDO {
     @Id
-    @Column(name="user_role_id")
-    private Integer userRoleId;
-
-    @Column(name="user_id")
-    private Integer userId;
-
     @Column(name="role_id")
     private Integer roleId;
+
+    @Column(name="role_name")
+    private String roleName;
 
     @Column(name="create_time")
     private Date createTime;

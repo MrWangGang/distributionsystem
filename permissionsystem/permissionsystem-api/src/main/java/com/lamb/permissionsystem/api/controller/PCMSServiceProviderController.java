@@ -1,18 +1,20 @@
 package com.lamb.permissionsystem.api.controller;
 
+import com.lamb.permissionsystem.entity.parameter.PCMSServiceProviderValidatePO;
 import com.lamb.permissionsystem.service.IdentityVerificationService;
 import io.swagger.annotations.*;
 import org.lamb.lambframework.core.handler.LambHandler;
 import org.lamb.lambframework.core.templete.LambResponseTemplete;
 import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.reactive.function.server.ServerRequest;
-import org.springframework.web.reactive.function.server.ServerResponse;
 import reactor.core.publisher.Mono;
 
 import javax.annotation.Resource;
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 
 /**
  * @description: D
@@ -35,14 +37,9 @@ public class PCMSServiceProviderController extends LambHandler {
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "成功",response = LambResponseTemplete.class)
     })
-    @RequestMapping(value= "/IPCMS00001",method= RequestMethod.POST,consumes= MediaType.APPLICATION_JSON_VALUE)
-    public Mono<ServerResponse> IPCMS00001(ServerRequest request){
-
-        identityVerificationService.validate(request.headers().asHttpHeaders().getFirst("serviceCode"),request.headers().asHttpHeaders().getFirst("accessToken"));
-        return example();
+    @RequestMapping(value= "/IPCMS00001",method = RequestMethod.POST,consumes= MediaType.APPLICATION_JSON_VALUE)
+    public Mono<LambResponseTemplete> IPCMS00001( @RequestBody @Valid @NotNull PCMSServiceProviderValidatePO param){
+        identityVerificationService.validate(param);
+        return returning();
     }
-
-
-
-
 }
