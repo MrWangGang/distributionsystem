@@ -7,7 +7,7 @@ import com.lamb.permissionsystem.entity.parameter.PCMSServiceProviderValidatePO;
 import com.lamb.permissionsystem.entity.template.UserTokenTM;
 import com.lamb.permissionsystem.entity.validate.GroupRequired;
 import com.lamb.permissionsystem.repository.dao.operation.UserTokenTMOperation;
-import com.lamb.permissionsystem.repository.dao.repository.FoundationQueryRepository;
+import com.lamb.permissionsystem.repository.dao.repository.ServiceDORepository;
 import com.lamb.permissionsystem.repository.dao.repository.SystemDORepository;
 import com.lamb.permissionsystem.repository.dao.repository.SystemServiceDORepository;
 import com.lamb.permissionsystem.repository.dao.repository.UserDORepository;
@@ -47,13 +47,14 @@ public class IdentityVerificationServiceImpl implements IdentityVerificationServ
     private UserTokenTMOperation userTokenTMOperation;
 
     @Resource
-    private FoundationQueryRepository foundationQueryRepository;
+    private ServiceDORepository serviceDORepository;
+
 
 
     @Override
     public void validate(PCMSServiceProviderValidatePO pcmsServiceProviderValidatePO) {
        ValidatorUtil.validate(pcmsServiceProviderValidatePO);
-        ServiceDO serviceDO = foundationQueryRepository.findByServiceCode(pcmsServiceProviderValidatePO.getServiceCode()).orElseThrow(()->new ProcessException(EB00000003));
+        ServiceDO serviceDO = serviceDORepository.findByServiceCode(pcmsServiceProviderValidatePO.getServiceCode()).orElseThrow(()->new ProcessException(EB00000003));
 
         Byte serviceStrategy = serviceDO.getServiceStrategy();
 
@@ -86,7 +87,7 @@ public class IdentityVerificationServiceImpl implements IdentityVerificationServ
 
     //授权
     private void autz(UserDO userDO,ServiceDO serviceDO){
-        List<ServiceDO> services =  foundationQueryRepository.findServiceByUserId(userDO.getUserId()).orElseThrow(()->new ProcessException(EB00000005));
+        List<ServiceDO> services =  serviceDORepository.findServiceByUserId(userDO.getUserId()).orElseThrow(()->new ProcessException(EB00000005));
         if (services.stream().noneMatch(e -> serviceDO.getServiceId().compareTo(e.getServiceId()) == 0)){
             throw new ProcessException(EB00000005);
         }
