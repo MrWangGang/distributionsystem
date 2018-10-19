@@ -20,7 +20,7 @@ import java.util.Optional;
 
 import static com.lamb.permissionsystem.common.enums.FoundationPropertyEnum.*;
 import static com.lamb.permissionsystem.common.enums.ProcessExceptionEnum.*;
-import static com.lamb.permissionsystem.repository.enums.RedisTMKeyEnum.USER_TOKEN;
+import static com.lamb.permissionsystem.common.enums.RedisTMKeyEnum.USER_TOKEN;
 
 
 /**

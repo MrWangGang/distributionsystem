@@ -16,7 +16,8 @@ public enum ProcessExceptionEnum {
 
 
     EI00000000("EI00000000","接口参数缺少accessToken"),
-    EI00000001("EI00000001","接口参数缺少serviceCode");
+    EI00000001("EI00000001","接口参数缺少serviceCode"),
+    EI00000002("EI00000002","接口参数缺少authToken");
 
 
 

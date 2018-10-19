@@ -4,6 +4,8 @@ import org.lamb.lambframework.core.config.LambSpringSecurityConfig;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.web.server.ServerHttpSecurity;
 
+import javax.annotation.Resource;
+
 import static com.lamb.permissionsystem.common.enums.ApiEnum.IPCMS00001;
 
 
@@ -16,9 +18,12 @@ import static com.lamb.permissionsystem.common.enums.ApiEnum.IPCMS00001;
 @Configuration
 public class SpringSecurityConfig extends LambSpringSecurityConfig {
 
+    @Resource
+    private AuthTokenServerSecurityContextRepository authTokenServerSecurityContextRepository;
+
     @Override
-    public ServerHttpSecurity.AuthorizeExchangeSpec strategy(ServerHttpSecurity.AuthorizeExchangeSpec authorizeExchangeSpec) {
-        authorizeExchangeSpec.pathMatchers(IPCMS00001.api()).permitAll();
-        return authorizeExchangeSpec;
+    public void strategy(ServerHttpSecurity http) {
+        http.securityContextRepository(authTokenServerSecurityContextRepository);
+        http.authorizeExchange().pathMatchers(IPCMS00001.api()).permitAll();
     }
 }

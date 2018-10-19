@@ -1,6 +1,6 @@
 package com.lamb.permissionsystem.api.controller;
 
-import com.lamb.permissionsystem.service.IdentityVerificationService;
+import com.lamb.permissionsystem.service.EmployeeOperationService;
 import io.swagger.annotations.*;
 import org.lamb.lambframework.core.handler.LambHandler;
 import org.lamb.lambframework.core.templete.LambResponseTemplete;
@@ -15,22 +15,19 @@ import reactor.core.publisher.Mono;
 import javax.annotation.Resource;
 
 /**
- * @description: D
+ * @description: 基础操作
  * @author: Mr.WangGang
- * @create: 2018-10-17 下午 7:07
+ * @create: 2018-10-19 上午 10:57
  **/
-@Api(description = "暴露服务给其他子服务",tags = "对外服务")
+@Api(description = "提供给本系统员工用户可操作的基础功能",tags = "基础操作")
 @RestController
-public class PCMSServiceProviderController extends LambHandler {
-
-
+public class FoundationOperationController extends LambHandler {
     @Resource
-    private IdentityVerificationService identityVerificationService;
+    private EmployeeOperationService employeeOperationService;
 
-    @ApiOperation(value = "身份验证" ,  notes="第三方系统对接此接口,可以在本系统中实现身份验证")
+    @ApiOperation(value = "登录" ,  notes="本系统员工由此登录")
     @ApiImplicitParams({
-            @ApiImplicitParam(paramType = "header", dataType = "String", name = "serviceCode", value = "需要访问的服务CODE", required = true) ,
-            @ApiImplicitParam(paramType = "header", dataType = "String", name = "accessToken", value = "访问方申请的令牌", required = false)
+            @ApiImplicitParam(paramType = "body", dataType = "json", name = "serviceCode", value = "员工信息RO", required = true) ,
     })
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "成功",response = LambResponseTemplete.class)
@@ -41,8 +38,4 @@ public class PCMSServiceProviderController extends LambHandler {
         identityVerificationService.validate(request.headers().asHttpHeaders().getFirst("serviceCode"),request.headers().asHttpHeaders().getFirst("accessToken"));
         return example();
     }
-
-
-
-
 }
