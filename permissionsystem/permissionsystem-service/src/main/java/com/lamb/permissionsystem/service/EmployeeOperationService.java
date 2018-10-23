@@ -1,6 +1,6 @@
 package com.lamb.permissionsystem.service;
 
-import com.lamb.permissionsystem.entity.parameter.FoundationOperationLoginPO;
+import com.lamb.permissionsystem.entity.parameter.LoginPO;
 import com.lamb.permissionsystem.entity.visual.EmployeeAuthTokenVO;
 
 /**
@@ -9,5 +9,5 @@ import com.lamb.permissionsystem.entity.visual.EmployeeAuthTokenVO;
  * @create: 2018-10-19 上午 10:52
  **/
 public interface EmployeeOperationService {
-    public EmployeeAuthTokenVO login(FoundationOperationLoginPO foundationOperationLoginPO);
+    public EmployeeAuthTokenVO login(LoginPO loginPO);
 }

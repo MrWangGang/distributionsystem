@@ -1,6 +1,6 @@
 package com.lamb.permissionsystem.api.controller;
 
-import com.lamb.permissionsystem.entity.parameter.PCMSServiceProviderValidatePO;
+import com.lamb.permissionsystem.entity.parameter.ValidatePO;
 import com.lamb.permissionsystem.service.IdentityVerificationService;
 import io.swagger.annotations.*;
 import org.lamb.lambframework.core.handler.LambHandler;
@@ -38,7 +38,7 @@ public class PCMSServiceProviderController extends LambHandler {
             @ApiResponse(code = 200, message = "成功",response = LambResponseTemplete.class)
     })
     @RequestMapping(value= "/IPCMS00001",method = RequestMethod.POST,consumes= MediaType.APPLICATION_JSON_VALUE)
-    public Mono<LambResponseTemplete> IPCMS00001( @RequestBody @Valid @NotNull PCMSServiceProviderValidatePO param){
+    public Mono<LambResponseTemplete> IPCMS00001( @RequestBody @Valid @NotNull ValidatePO param){
         identityVerificationService.validate(param);
         return returning();
     }

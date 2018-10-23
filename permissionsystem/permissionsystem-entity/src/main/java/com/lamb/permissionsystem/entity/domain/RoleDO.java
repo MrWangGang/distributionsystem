@@ -1,12 +1,12 @@
 package com.lamb.permissionsystem.entity.domain;
 
+import com.lamb.permissionsystem.entity.domain.supper.SupperDO;
 import lombok.Data;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import java.util.Date;
 
 /**
  * @description: 角色表
@@ -17,17 +17,11 @@ import java.util.Date;
 @Data
 @Entity
 @Table(name = "role")
-public class RoleDO {
+public class RoleDO  extends SupperDO {
     @Id
     @Column(name="role_id")
     private Integer roleId;
 
     @Column(name="role_name")
     private String roleName;
-
-    @Column(name="create_time")
-    private Date createTime;
-
-    @Column(name="update_time")
-    private Date updateTime;
 }

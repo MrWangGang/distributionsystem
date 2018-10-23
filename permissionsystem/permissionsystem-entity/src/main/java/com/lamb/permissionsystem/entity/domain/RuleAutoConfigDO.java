@@ -1,12 +1,12 @@
 package com.lamb.permissionsystem.entity.domain;
 
+import com.lamb.permissionsystem.entity.domain.supper.SupperDO;
 import lombok.Data;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import java.util.Date;
 
 /**
  * @description: 规则自动配置表
@@ -16,7 +16,7 @@ import java.util.Date;
 @Data
 @Entity
 @Table(name = "rule_auto_config")
-public class RuleAutoConfigDO {
+public class RuleAutoConfigDO  extends SupperDO {
     @Id
     @Column(name="rule_auto_config_id")
     private Integer ruleAutoConfigId;
@@ -29,10 +29,4 @@ public class RuleAutoConfigDO {
 
     @Column(name="user_tag")
     private String userTag;
-
-    @Column(name="create_time")
-    private Date createTime;
-
-    @Column(name="update_time")
-    private Date updateTime;
 }

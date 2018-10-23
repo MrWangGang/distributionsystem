@@ -1,12 +1,12 @@
 package com.lamb.permissionsystem.entity.domain;
 
+import com.lamb.permissionsystem.entity.domain.supper.SupperDO;
 import lombok.Data;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import java.util.Date;
 
 /**
  * @description: 系统表
@@ -16,21 +16,15 @@ import java.util.Date;
 @Data
 @Entity
 @Table(name = "system")
-public class SystemDO {
+public class SystemDO  extends SupperDO {
 
     @Id
     @Column(name="system_id")
     private Integer systemId;
 
     @Column(name="system_name")
-    private Integer systemName;
+    private String systemName;
 
     @Column(name="system_secret")
-    private Integer systemSecret;
-
-    @Column(name="create_time")
-    private Date createTime;
-
-    @Column(name="update_time")
-    private Date updateTime;
+    private String systemSecret;
 }

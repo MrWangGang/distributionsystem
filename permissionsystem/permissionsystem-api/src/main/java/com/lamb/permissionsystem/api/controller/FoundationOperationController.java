@@ -1,6 +1,6 @@
 package com.lamb.permissionsystem.api.controller;
 
-import com.lamb.permissionsystem.entity.parameter.FoundationOperationLoginPO;
+import com.lamb.permissionsystem.entity.parameter.LoginPO;
 import com.lamb.permissionsystem.entity.visual.EmployeeAuthTokenVO;
 import com.lamb.permissionsystem.service.EmployeeOperationService;
 import io.swagger.annotations.Api;
@@ -36,7 +36,7 @@ public class FoundationOperationController extends LambHandler {
             @ApiResponse(code = 200, message = "成功",response = EmployeeAuthTokenVO.class)
     })
     @RequestMapping(value= "/IPCMS00002",method= RequestMethod.POST,consumes= MediaType.APPLICATION_JSON_VALUE)
-    public Mono<LambResponseTemplete> IPCMS00002(@RequestBody @Valid @NotNull FoundationOperationLoginPO param){
+    public Mono<LambResponseTemplete> IPCMS00002(@RequestBody @Valid @NotNull LoginPO param){
         return returning(employeeOperationService.login(param));
     }
 }

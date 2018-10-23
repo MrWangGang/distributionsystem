@@ -4,7 +4,7 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
-import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
 
 /**
@@ -14,11 +14,11 @@ import java.io.Serializable;
  **/
 @ApiModel(value="员工登录接口请求参数",description="员工登录接口请求参数")
 @Data
-public class FoundationOperationLoginPO implements Serializable {
+public class LoginPO implements Serializable {
     @ApiModelProperty(value="员工账号",name="employeeAccount",example="admin@vdong.com")
-    @NotEmpty
+    @NotBlank
     private String employeeAccount;
     @ApiModelProperty(value="员工账号的密码",name="accountPassword",example="Ww778899321")
-    @NotEmpty
+    @NotBlank
     private String accountPassword;
 }

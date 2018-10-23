@@ -2,7 +2,7 @@ package com.lamb.permissionsystem.service.impl;
 
 import com.lamb.permissionsystem.common.exception.ProcessException;
 import com.lamb.permissionsystem.entity.domain.EmployeeDO;
-import com.lamb.permissionsystem.entity.parameter.FoundationOperationLoginPO;
+import com.lamb.permissionsystem.entity.parameter.LoginPO;
 import com.lamb.permissionsystem.entity.visual.EmployeeAuthTokenVO;
 import com.lamb.permissionsystem.repository.dao.repository.EmployeeDORepository;
 import com.lamb.permissionsystem.service.EmployeeOperationService;
@@ -27,10 +27,10 @@ public class EmployeeOperationServiceImpl implements EmployeeOperationService {
     private EmployeeDORepository employeeDORepository;
 
     @Override
-    public EmployeeAuthTokenVO login(FoundationOperationLoginPO foundationOperationLoginPO) {
-        ValidatorUtil.validate(foundationOperationLoginPO);
-        EmployeeDO employeeDO = employeeDORepository.findByEmployeeAccount(foundationOperationLoginPO.getEmployeeAccount()).orElseThrow(()->new ProcessException(EB00000006));
-        if(!foundationOperationLoginPO.getAccountPassword().equals(employeeDO.getAccounPassword())){
+    public EmployeeAuthTokenVO login(LoginPO loginPO) {
+        ValidatorUtil.validate(loginPO);
+        EmployeeDO employeeDO = employeeDORepository.findByEmployeeAccount(loginPO.getEmployeeAccount()).orElseThrow(()->new ProcessException(EB00000006));
+        if(!loginPO.getAccountPassword().equals(employeeDO.getAccounPassword())){
             throw new ProcessException(EB00000006);
         }
         EmployeeAuthTokenVO employeeAuthTokenVO = new EmployeeAuthTokenVO();

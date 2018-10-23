@@ -3,7 +3,7 @@ package com.lamb.permissionsystem.service.impl;
 import com.lamb.permissionsystem.common.exception.ProcessException;
 import com.lamb.permissionsystem.entity.domain.ServiceDO;
 import com.lamb.permissionsystem.entity.domain.UserDO;
-import com.lamb.permissionsystem.entity.parameter.PCMSServiceProviderValidatePO;
+import com.lamb.permissionsystem.entity.parameter.ValidatePO;
 import com.lamb.permissionsystem.entity.template.UserTokenTM;
 import com.lamb.permissionsystem.entity.validate.GroupRequired;
 import com.lamb.permissionsystem.repository.dao.operation.UserTokenTMOperation;
@@ -52,9 +52,9 @@ public class IdentityVerificationServiceImpl implements IdentityVerificationServ
 
 
     @Override
-    public void validate(PCMSServiceProviderValidatePO pcmsServiceProviderValidatePO) {
-       ValidatorUtil.validate(pcmsServiceProviderValidatePO);
-        ServiceDO serviceDO = serviceDORepository.findByServiceCode(pcmsServiceProviderValidatePO.getServiceCode()).orElseThrow(()->new ProcessException(EB00000003));
+    public void validate(ValidatePO validatePO) {
+       ValidatorUtil.validate(validatePO);
+        ServiceDO serviceDO = serviceDORepository.findByServiceCode(validatePO.getServiceCode()).orElseThrow(()->new ProcessException(EB00000003));
 
         Byte serviceStrategy = serviceDO.getServiceStrategy();
 
@@ -63,12 +63,12 @@ public class IdentityVerificationServiceImpl implements IdentityVerificationServ
             return;
         }else if(T_SERVICE_AUTC.getValue().equals(serviceStrategy)){
             //需要认证
-            UserDO userDO = autc(pcmsServiceProviderValidatePO);
+            UserDO userDO = autc(validatePO);
             legitimateRequestUSS(userDO,serviceDO);
             return;
         }else if(T_SERVICE_AUTZ.getValue().equals(serviceStrategy)){
             //需要授权
-            UserDO userDO = autc(pcmsServiceProviderValidatePO);
+            UserDO userDO = autc(validatePO);
             legitimateRequestUSS(userDO,serviceDO);
             autz(userDO,serviceDO);
             return;
@@ -78,9 +78,9 @@ public class IdentityVerificationServiceImpl implements IdentityVerificationServ
     }
 
     //认证
-    private UserDO autc(PCMSServiceProviderValidatePO pcmsServiceProviderValidatePO){
-        ValidatorUtil.validate(pcmsServiceProviderValidatePO,GroupRequired.class);
-        UserTokenTM userTokenTM = Optional.ofNullable(userTokenTMOperation.getObject(USER_TOKEN.getKey()+pcmsServiceProviderValidatePO.getAccessToken())).orElseThrow(()->new ProcessException(EB00000000));
+    private UserDO autc(ValidatePO validatePO){
+        ValidatorUtil.validate(validatePO,GroupRequired.class);
+        UserTokenTM userTokenTM = Optional.ofNullable(userTokenTMOperation.getObject(USER_TOKEN.getKey()+ validatePO.getAccessToken())).orElseThrow(()->new ProcessException(EB00000000));
         UserDO userDO = userDORepository.findById(userTokenTM.getUserId()).orElseThrow(()->new ProcessException(EB00000000));
         return userDO;
     }

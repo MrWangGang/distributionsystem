@@ -1,6 +1,6 @@
 package com.lamb.permissionsystem.service;
 
-import com.lamb.permissionsystem.entity.parameter.PCMSServiceProviderValidatePO;
+import com.lamb.permissionsystem.entity.parameter.ValidatePO;
 
 /**
  * @description: 身份验证
@@ -8,5 +8,5 @@ import com.lamb.permissionsystem.entity.parameter.PCMSServiceProviderValidatePO;
  * @create: 2018-10-17 下午 12:28
  **/
 public interface IdentityVerificationService {
-    public void validate(PCMSServiceProviderValidatePO pcmsServiceProviderValidatePO);
+    public void validate(ValidatePO validatePO);
 }
