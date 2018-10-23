@@ -38,7 +38,7 @@ public class PCMSServiceProviderController extends LambHandler {
             @ApiResponse(code = 200, message = "成功",response = LambResponseTemplete.class)
     })
     @RequestMapping(value= "/IPCMS00001",method = RequestMethod.POST,consumes= MediaType.APPLICATION_JSON_VALUE)
-    public Mono<LambResponseTemplete> IPCMS00001( @RequestBody @Valid @NotNull ValidatePO param){
+    public Mono<LambResponseTemplete> validate( @RequestBody @Valid @NotNull ValidatePO param){
         identityVerificationService.validate(param);
         return returning();
     }

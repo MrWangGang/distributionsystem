@@ -22,6 +22,14 @@ public class RuleDO  extends SupperDO {
     @Column(name="rule_id")
     private Integer ruleId;
 
+    @Column(name="system_id")
+    private Integer systemId;
+
     @Column(name="rule_name")
     private String ruleName;
+
+    @Column(name="user_tag")
+    private String userTag;
+
+
 }

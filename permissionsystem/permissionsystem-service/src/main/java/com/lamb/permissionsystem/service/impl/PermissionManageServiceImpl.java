@@ -1,5 +1,6 @@
 package com.lamb.permissionsystem.service.impl;
 
+import com.google.common.collect.Lists;
 import com.lamb.permissionsystem.entity.domain.*;
 import com.lamb.permissionsystem.entity.domain.supper.SupperDO;
 import com.lamb.permissionsystem.entity.parameter.*;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import javax.transaction.Transactional;
+import java.util.List;
 
 /**
  * @description: 权限管理
@@ -44,6 +46,11 @@ public class PermissionManageServiceImpl implements PermissionManageService {
     @Resource
     private SystemServiceDORepository systemServiceDORepository;
 
+    @Resource
+    private RuleRoleDORepository ruleRoleDORepository;
+
+    @Resource
+    private RuleDORepository ruleDORepository;
 
     @Override
     public void operationUser(OperationUserPO operationUserPO) {
@@ -88,6 +95,18 @@ public class PermissionManageServiceImpl implements PermissionManageService {
             @Override
             public void execute(SystemDO systemDO) {
                 systemDORepository.save(systemDO);
+            }
+        });
+    }
+
+    @Override
+    public void operationRule(OperationRulePO operationRulePO) {
+        ValidatorUtil.validate(operationRulePO);
+
+        operation(operationRulePO, RuleDO.class, new OperationFunction<RuleDO>() {
+            @Override
+            public void execute(RuleDO ruleDO) {
+                ruleDORepository.save(ruleDO);
             }
         });
     }
@@ -144,6 +163,133 @@ public class PermissionManageServiceImpl implements PermissionManageService {
                     systemServiceDORepository.save(systemServiceDO);
                 }
             });
+        });
+    }
+
+    @Override
+    public void relateRuleToRole(RelateRuleToRolePO relateRuleToRolePO) {
+        ValidatorUtil.validate(relateRuleToRolePO);
+
+        relateRuleToRolePO.getRoleIds().stream().filter(roleId->StringUtils.isNotBlank(roleId)).forEach((roleId)->{
+            RuleRoleDO ruleRoleDO = new RuleRoleDO();
+            ruleRoleDO.setRuleId(Integer.valueOf(relateRuleToRolePO.getRuleId()));
+            ruleRoleDO.setRoleId(Integer.valueOf(roleId));
+
+            operation(relateRuleToRolePO,RuleRoleDO.class, new OperationFunction<RuleRoleDO>() {
+                @Override
+                public void execute(RuleRoleDO ruleRoleDO) {
+                    ruleRoleDORepository.save(ruleRoleDO);
+                }
+            });
+        });
+    }
+
+    @Override
+    public void deleteUser(DeleteUserPO deleteUserPO) {
+        ValidatorUtil.validate(deleteUserPO);
+
+        operation(deleteUserPO,UserDO.class, new OperationFunction<UserDO>() {
+            @Override
+            public void execute(UserDO userDO) {
+                //删除用户与角色关联表
+                List<UserRoleDO> userRoleDOList =  userRoleDORepository.findByUserId(userDO.getUserId()).orElse(Lists.newArrayList());
+                userRoleDOList.stream().filter(e->e!=null).forEach((e)->{
+                    userRoleDORepository.deleteById(e.getUserRoleId());
+                });
+                //删除用户
+                userDORepository.deleteById(userDO.getUserId());
+            }
+        });
+    }
+
+    @Override
+    public void deleteRole(DeleteRolePO deleteRolePO) {
+        ValidatorUtil.validate(deleteRolePO);
+
+        operation(deleteRolePO,RoleDO.class, new OperationFunction<RoleDO>() {
+            @Override
+            public void execute(RoleDO roleDO) {
+                //删除角色与服务关联表
+                List<RoleServiceDO> roleServiceDOList = roleServiceDORepository.findByRoleId(roleDO.getRoleId()).orElse(Lists.newArrayList());
+                roleServiceDOList.stream().filter(e->e!=null).forEach((e)->{
+                    roleServiceDORepository.deleteById(e.getRoleServiceId());
+                });
+                //删除规则与角色关联表
+                List<RuleRoleDO> ruleRoleDOList = ruleRoleDORepository.findByRoleId(roleDO.getRoleId()).orElse(Lists.newArrayList());
+                ruleRoleDOList.stream().filter(e->e!=null).forEach((e)->{
+                    ruleRoleDORepository.deleteById(e.getRuleRoleId());
+                });
+                //删除角色
+                roleDORepository.deleteById(roleDO.getRoleId());
+            }
+        });
+    }
+
+    @Override
+    public void deleteService(DeleteServicePO deleteServicePO) {
+        ValidatorUtil.validate(deleteServicePO);
+
+        operation(deleteServicePO,ServiceDO.class, new OperationFunction<ServiceDO>() {
+            @Override
+            public void execute(ServiceDO serviceDO) {
+                //删除系统与服务关联表
+                SystemServiceDO systemServiceDO = systemServiceDORepository.findByServiceId(serviceDO.getServiceId()).orElse(null);
+                if(systemServiceDO!=null){
+                    systemServiceDORepository.deleteById(systemServiceDO.getSystemServiceId());
+                }
+                //删除角色与服务关联表
+                List<RoleServiceDO> roleServiceDOList = roleServiceDORepository.findByServiceId(serviceDO.getServiceId()).orElse(Lists.newArrayList());
+                roleServiceDOList.stream().filter(e->e!=null).forEach((e)->{
+                    roleServiceDORepository.deleteById(e.getRoleServiceId());
+                });
+                //删除服务
+                serviceDORepository.deleteById(serviceDO);
+            }
+        });
+    }
+
+    @Override
+    public void deleteSystem(DeleteSystemPO deleteSystemPO) {
+        ValidatorUtil.validate(deleteSystemPO);
+
+        operation(deleteSystemPO,SystemDO.class, new OperationFunction<SystemDO>() {
+            @Override
+            public void execute(SystemDO systemDO) {
+                //删除系统与服务关联表
+                List<SystemServiceDO> systemServiceDOList = systemServiceDORepository.findBySystemId(systemDO.getSystemId()).orElse(Lists.newArrayList());
+                systemServiceDOList.stream().filter(e->e!=null).forEach((e)->{
+                    systemServiceDORepository.deleteById(e.getSystemServiceId());
+                });
+                //删除此系统所绑定所有用户
+                List<UserDO> userDOList = userDORepository.findBySystemId(systemDO.getSystemId()).orElse(Lists.newArrayList());
+                userDOList.stream().filter(e->e!=null).forEach((e)->{
+                    userDORepository.deleteById(e.getUserId());
+                });
+                //删除此系统所绑定的规则
+                List<RuleDO> ruleDOList = ruleDORepository.findBySystemId(systemDO.getSystemId()).orElse(Lists.newArrayList());
+                ruleDOList.stream().filter(e->e!=null).forEach((e)->{
+                    ruleDORepository.deleteById(e.getRuleId());
+                });
+                //删除系统
+                systemDORepository.deleteById(systemDO.getSystemId());
+            }
+        });
+    }
+
+    @Override
+    public void deleteRule(DeleteRulePO deleteRulePO) {
+        ValidatorUtil.validate(deleteRulePO);
+        operation(deleteRulePO,RuleDO.class, new OperationFunction<RuleDO>() {
+            @Override
+            public void execute(RuleDO ruleDO) {
+                //删除规则与角色关联表
+                List<RuleRoleDO> ruleRoleDOList = ruleRoleDORepository.findByRuleId(ruleDO.getRuleId()).orElse(Lists.newArrayList());
+                ruleRoleDOList.stream().filter(e->e!=null).forEach((e)->{
+                    ruleRoleDORepository.deleteById(e.getRuleRoleId());
+                });
+                //删除规则
+                ruleDORepository.deleteById(ruleDO.getRuleId());
+            }
         });
     }
 

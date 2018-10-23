@@ -19,11 +19,25 @@ public interface PermissionManageService {
 
     public void operationSystem(OperationSystemPO operationSystemPO);
 
-    //关联操作
+    public void operationRule(OperationRulePO operationRulePO);
+
+    //-关联操作
     public void relateUserToRole(RelateUserToRolePO relateUserToRolePO);
 
     public void relateRoleToService(RelateRoleToServicePO relateRoleToServicePO);
 
     public void relateSystemToService(RelateSystemToServicePO relateSystemToServicePO);
 
+    public void relateRuleToRole(RelateRuleToRolePO relateRuleToRolePO);
+
+    //-删除操作
+    public void deleteUser(DeleteUserPO deleteUserPO);
+
+    public void deleteRole(DeleteRolePO deleteRolePO);
+
+    public void deleteService(DeleteServicePO deleteServicePO);
+
+    public void deleteSystem(DeleteSystemPO deleteSystemPO);
+
+    public void deleteRule(DeleteRulePO deleteRulePO);
 }

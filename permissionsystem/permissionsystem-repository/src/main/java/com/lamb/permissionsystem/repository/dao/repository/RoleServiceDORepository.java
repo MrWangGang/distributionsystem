@@ -2,6 +2,10 @@ package com.lamb.permissionsystem.repository.dao.repository;
 
 import com.lamb.permissionsystem.entity.domain.RoleServiceDO;
 import org.lamb.lambframework.core.supper.LambDORepository;
+import org.springframework.data.jpa.repository.Query;
+
+import java.util.List;
+import java.util.Optional;
 
 /**
  * @description: 角色与服务中间表DAO
@@ -10,4 +14,19 @@ import org.lamb.lambframework.core.supper.LambDORepository;
  **/
 public interface RoleServiceDORepository extends LambDORepository<RoleServiceDO> {
 
+    @Query(nativeQuery = true,value =
+            "select " +
+                    "rs.* " +
+                    "FROM role_service rs " +
+                    "where rs.role_id = ?1"
+    )
+    public Optional<List<RoleServiceDO>> findByRoleId(Integer roleId);
+
+    @Query(nativeQuery = true,value =
+            "select " +
+                    "rs.* " +
+                    "FROM role_service rs " +
+                    "where rs.service_id = ?1"
+    )
+    public Optional<List<RoleServiceDO>> findByServiceId(Integer serviceId);
 }
